@@ -1,0 +1,21 @@
+A. Authentication & UserMethod    Endpoint    PurposePOST    /api/auth/register    Register customerPOST    /api/auth/login    Login and return JWTPOST    /api/auth/logout    Logout/invalidate session 
+POST    /api/auth/refresh-tokenGET    /api/users/me    Get logged-in user's profilePATCH    /api/users/me    Update profilePATCH    /api/users/me/password    Change password
+
+
+B. Products
+These APIs serve both guests/customers and admins where applicable.
+Method    Endpoint    PurposeGET    /api/products    List products with pagination, search, filtering, sortingGET    /api/products/{product_id}    Get product detailsPOST    /api/products    Admin creates productPATCH    /api/products/{product_id}    Admin updates productDELETE    /api/products/{product_id}    Admin deletes/deactivates productPOST    /api/products/{product_id}/image    Admin uploads product image
+
+
+C. CategoriesMethod    Endpoint    PurposeGET    /api/categories    List categoriesGET    /api/categories/{category_id}    Get category details if neededPOST    /api/categories    Admin creates categoryPATCH    /api/categories/{category_id}    Admin updates categoryDELETE    /api/categories/{category_id}    Admin deletes category
+
+
+D. CartMethod    Endpoint    PurposeGET    /api/cart    Get current user's cartPOST    /api/cart/items    Add product to cartPATCH    /api/cart/items/{item_id}    Change quantityDELETE    /api/cart/items/{item_id}    Remove itemDELETE    /api/cart    Clear cart
+
+
+E. Checkout & OrdersMethod    Endpoint    PurposePOST    /api/orders    Create order from current cartGET    /api/orders    Customer's order historyGET    /api/orders/{order_id}    Get order detailsPATCH    /api/admin/orders/{order_id}/status    Admin updates order status
+Checkout can be handled by the order creation API.
+
+
+F. Admin DashboardMethod    Endpoint    PurposeGET    /api/admin/dashboard    Dashboard statistics
+GET 	/api/admin/orders — list all orders, ideally with filters (status, customer, date range) and pagination
