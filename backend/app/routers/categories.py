@@ -14,10 +14,7 @@ def list_categories(db: Session = Depends(get_db)):
     categories = category_service.get_categories(db)
     return StandardResponse(data=categories)
 
-@router.get("/{category_id}", response_model=StandardResponse[CategoryRead])
-def get_category(category_id: int, db: Session = Depends(get_db)):
-    category = category_service.get_category_by_id(db, category_id)
-    return StandardResponse(data=category)
+
 
 @router.post("", response_model=StandardResponse[CategoryRead], status_code=status.HTTP_201_CREATED)
 def create_category(category_in: CategoryCreate, db: Session = Depends(get_db), current_user=Depends(require_admin)):

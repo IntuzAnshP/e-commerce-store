@@ -60,8 +60,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> TokenResponse:
         RefreshToken.user_id == user_id
     ).first()
     
-    from datetime import timezone
-    if not db_token or db_token.expires_at < datetime.now(timezone.utc):
+    if not db_token or db_token.expires_at < datetime.utcnow():
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token")
     
     user = get_user_by_id(db, user_id)

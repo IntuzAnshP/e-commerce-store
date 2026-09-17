@@ -12,7 +12,7 @@ class Product(Base):
     description = Column(String)
     price = Column(Float, nullable=False)
     stock = Column(Integer, default=0)
-    category_id = Column(Integer, ForeignKey("categories.id"))
+    category_id = Column(Integer, ForeignKey("categories.id", ondelete="SET NULL"))
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

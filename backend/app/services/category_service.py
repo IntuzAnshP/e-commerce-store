@@ -18,6 +18,10 @@ def get_category_by_id(db: Session, category_id: int):
     return category
 
 def create_category(db: Session, category_in: CategoryCreate):
+    existing_category = db.query(Category).filter(Category.name == category_in.name).first()
+    if existing_category:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Category with this name already exists")
+        
     slug = generate_slug(category_in.name)
     if db.query(Category).filter(Category.slug == slug).first():
         slug = f"{slug}-{int(datetime.utcnow().timestamp())}"
@@ -35,7 +39,10 @@ def create_category(db: Session, category_in: CategoryCreate):
 def update_category(db: Session, category_id: int, category_in: CategoryUpdate):
     category = get_category_by_id(db, category_id)
     
-    if category_in.name is not None:
+    if category_in.name is not None and category_in.name != category.name:
+        existing_category = db.query(Category).filter(Category.name == category_in.name).first()
+        if existing_category:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Category with this name already exists")
         category.name = category_in.name
         new_slug = generate_slug(category_in.name)
         if new_slug != category.slug and not db.query(Category).filter(Category.slug == new_slug).first():

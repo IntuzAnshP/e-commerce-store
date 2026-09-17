@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
 from app.schemas.category import CategoryRead
@@ -15,8 +15,8 @@ class ProductImageRead(BaseModel):
 class ProductBase(BaseModel):
     name: str
     description: Optional[str] = None
-    price: float
-    stock: int = 0
+    price: float = Field(..., gt=0, description="Price must be greater than zero")
+    stock: int = Field(default=0, ge=0, description="Stock cannot be negative")
     category_id: Optional[int] = None
     is_active: bool = True
 
