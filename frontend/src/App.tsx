@@ -5,6 +5,7 @@ import Products from './pages/Products';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
+import Cart from "./pages/Cart";
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import './App.css';
@@ -24,6 +25,7 @@ function App() {
                 <Route path='/register' element={<Register />} />
                 <Route path='/home' element={<Home />} />
                 <Route path='/products' element={<Products />} />
+                <Route path='/cart' element={<Cart />} />
               </Routes>
             </main>
           </div>
