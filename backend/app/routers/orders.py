@@ -8,7 +8,7 @@ from app.dependencies.auth import get_current_active_user, require_admin
 from app.models.user import User
 from typing import List, Optional
 
-router = APIRouter(tags=["orders"])
+router = APIRouter(tags=["Orders"])
 
 # Customer Order Endpoints
 @router.post("/api/orders", response_model=StandardResponse[OrderRead], status_code=status.HTTP_201_CREATED)
