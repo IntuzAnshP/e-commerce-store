@@ -5,6 +5,7 @@ from app.models.order import OrderStatus
 from app.schemas.product import ProductRead
 
 class ShippingAddress(BaseModel):
+    full_name: str = ""
     address_line_1: str
     city: str
     state: str

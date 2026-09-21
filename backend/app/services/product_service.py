@@ -11,6 +11,9 @@ from uuid import uuid4
 UPLOAD_DIR = "uploads/products"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+MAX_IMAGE_SIZE = 5 * 1024 * 1024 
+ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"]
+
 def generate_slug(name: str) -> str:
     return re.sub(r'[\W_]+', '-', name.lower()).strip('-')
 
@@ -31,7 +34,7 @@ def get_products(db: Session, skip: int = 0, limit: int = 10, search: str = None
     elif sort_by == "name_desc":
         query = query.order_by(Product.name.desc())
     else:
-        query = query.order_by(Product.created_at.desc())
+        query = query.order_by(Product.created_at.desc(), Product.id.desc())
         
     total = query.count()
     items = query.offset(skip).limit(limit).all()
@@ -92,6 +95,23 @@ def delete_product(db: Session, product_id: int):
     db.commit()
 
 def upload_product_image(db: Session, product_id: int, file: UploadFile):
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail=f"Unsupported file type. Allowed types are: {', '.join(ALLOWED_IMAGE_TYPES)}"
+        )
+        
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    
+    if file_size > MAX_IMAGE_SIZE:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail=f"File too large. Maximum size is {MAX_IMAGE_SIZE / (1024 * 1024):.0f} MB"
+        )
+        
+    file.file.seek(0)
+    
     product = get_product_by_id(db, product_id, include_inactive=True)
     
     ext = file.filename.split(".")[-1]

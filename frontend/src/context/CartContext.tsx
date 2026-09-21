@@ -46,7 +46,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 // Fetch server cart
                 try {
                     const response = await getCart();
-                    setCartItems(response.items || []);
+                    setCartItems(response.data?.items || []);
                 } catch (error) {
                     console.error("Failed to fetch cart from server", error);
                 }
@@ -68,7 +68,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (isAuthenticated) {
             await addToCartAPI(product.id, quantity);
             const response = await getCart();
-            setCartItems(response.items || []);
+            setCartItems(response.data?.items || []);
         } else {
             setCartItems((prev) => {
                 const existing = prev.find(item => item.product?.id === product.id);
@@ -89,7 +89,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (isAuthenticated && typeof itemId === 'number') {
             await updateCartItemAPI(itemId, quantity);
             const response = await getCart();
-            setCartItems(response.items || []);
+            setCartItems(response.data?.items || []);
         } else {
             setCartItems((prev) => {
                 const newCart = prev.map(item => item.id === itemId ? { ...item, quantity } : item);
@@ -103,7 +103,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (isAuthenticated && typeof itemId === 'number') {
             await removeCartItemAPI(itemId);
             const response = await getCart();
-            setCartItems(response.items || []);
+            setCartItems(response.data?.items || []);
         } else {
              setCartItems((prev) => {
                 const newCart = prev.filter(item => item.id !== itemId);

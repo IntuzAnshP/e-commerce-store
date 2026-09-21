@@ -23,7 +23,19 @@ const Register = () => {
 
         } catch (err: any) {
             console.error("Registration failed:", err);
-            setError(err.response?.data?.message || "Failed to register");
+            
+            let errMsg = "Failed to register";
+            if (err.response?.data?.detail) {
+                if (Array.isArray(err.response.data.detail)) {
+                    errMsg = err.response.data.detail[0]?.msg || errMsg;
+                } else if (typeof err.response.data.detail === 'string') {
+                    errMsg = err.response.data.detail;
+                }
+            } else if (err.response?.data?.message) {
+                errMsg = err.response.data.message;
+            }
+            
+            setError(errMsg);
         } finally {
             setLoading(false);
         }

@@ -9,6 +9,7 @@ const Login = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,14 +23,24 @@ const Login = () => {
             // Save the token via AuthContext
             login(access_token);
 
-            alert("Login successful! Token saved.");
-
-            // In the future, we will redirect them to the home page or dashboard here
+            // Redirect them to the home page
+            navigate('/home');
 
         } catch (err: any) {
             console.error("Login failed:", err);
-            // Show a friendly error or whatever the backend returned
-            setError(err.response?.data?.message || "Invalid email or password");
+            
+            let errMsg = "Invalid email or password";
+            if (err.response?.data?.detail) {
+                if (Array.isArray(err.response.data.detail)) {
+                    errMsg = err.response.data.detail[0]?.msg || errMsg;
+                } else if (typeof err.response.data.detail === 'string') {
+                    errMsg = err.response.data.detail;
+                }
+            } else if (err.response?.data?.message) {
+                errMsg = err.response.data.message;
+            }
+            
+            setError(errMsg);
         } finally {
             setLoading(false);
         }

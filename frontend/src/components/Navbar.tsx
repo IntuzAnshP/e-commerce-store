@@ -14,8 +14,8 @@ const Navbar = () => {
         navigate('/'); // Send them back to login page
     };
 
-    // Calculate total items in the cart
-    const totalItems = cartItems ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0;
+    // Calculate total unique items in the cart
+    const totalItems = cartItems ? cartItems.length : 0;
 
     return (
         <nav style={{
@@ -35,14 +35,26 @@ const Navbar = () => {
                 </li>
 
                 {isAuthenticated ? (
-                    <li>
-                        <button
-                            onClick={handleLogout}
-                            style={{ background: 'none', border: 'none', color: '#000000ff', cursor: 'pointer', padding: 0 }}
-                        >
-                            Logout
-                        </button>
-                    </li>
+                    <>
+                        <li>
+                            <Link to='/orders' style={{ color: '#000000ff', textDecoration: 'none' }}>
+                                My Orders
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to='/profile' style={{ color: '#000000ff', textDecoration: 'none' }}>
+                                My Profile
+                            </Link>
+                        </li>
+                        <li>
+                            <button
+                                onClick={handleLogout}
+                                style={{ background: 'none', border: 'none', color: '#000000ff', cursor: 'pointer', padding: 0 }}
+                            >
+                                Logout
+                            </button>
+                        </li>
+                    </>
                 ) : (
                     <li><Link to='/' style={{ color: '#000000ff', textDecoration: 'none' }}>Login</Link></li>
                 )}

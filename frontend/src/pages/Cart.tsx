@@ -1,9 +1,21 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
     const { cartItems, removeFromCart, updateQuantity } = useCart();
+    const { isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        if (!isAuthenticated) {
+            alert('Please login to proceed to checkout.');
+            navigate('/');
+        } else {
+            navigate('/checkout');
+        }
+    };
 
     if (!cartItems || cartItems.length === 0) {
         return (
@@ -35,8 +47,12 @@ const Cart = () => {
                         <div>
                             {/* NOTE: If your backend returns the product details inside the item, use item.product.name. 
                                 Adjust this based on your actual data structure! */}
-                            <h3 style={{ margin: '0 0 0.5rem 0' }}>Product ID: {item.product_id}</h3>
+                            <h3 style={{ margin: '0 0 0.5rem 0' }}>{item.product?.name || `Product ID: ${item.product_id}`}</h3>
+                            <p style={{ margin: 0, color: '#555' }}>Price: ${item.product?.price?.toFixed(2) || 'N/A'}</p>
                             <p style={{ margin: 0, color: '#555' }}>Quantity: {item.quantity}</p>
+                            <p style={{ margin: '0.5rem 0 0 0', fontWeight: 'bold' }}>
+                                Item Total: ${ (item.product?.price ? item.product.price * item.quantity : 0).toFixed(2) }
+                            </p>
                         </div>
 
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -64,15 +80,20 @@ const Cart = () => {
             </div>
 
             <div style={{ marginTop: '2rem', textAlign: 'right' }}>
-                <button style={{
-                    padding: '1rem 2rem',
-                    background: '#2ecc71',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    fontSize: '1.1rem',
-                    cursor: 'pointer'
-                }}>
+                <h2 style={{ marginBottom: '1rem' }}>
+                    Cart Total: ${cartItems.reduce((total, item) => total + (item.product?.price ? item.product.price * item.quantity : 0), 0).toFixed(2)}
+                </h2>
+                <button 
+                    onClick={handleCheckout}
+                    style={{
+                        padding: '1rem 2rem',
+                        background: '#2ecc71',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        fontSize: '1.1rem',
+                        cursor: 'pointer'
+                    }}>
                     Proceed to Checkout
                 </button>
             </div>

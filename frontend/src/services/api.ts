@@ -24,6 +24,11 @@ export const getProducts = async () => {
     return response.data;
 };
 
+export const getProductById = async (id: number | string) => {
+    const response = await api.get(`/products/${id}`);
+    return response.data;
+};
+
 export const loginUser = async (email: string, password: string) => {
     // Your backend expects a JSON object with email and password
     const response = await api.post('/auth/login', { email, password });
@@ -46,7 +51,7 @@ export const addToCartAPI = async (product_id: number, quantity: number) => {
 };
 
 export const updateCartItemAPI = async (item_id: number, quantity: number) => {
-    const response = await api.put(`/cart/items/${item_id}`, { quantity });
+    const response = await api.patch(`/cart/items/${item_id}`, { quantity });
     return response.data;
 };
 
@@ -57,5 +62,30 @@ export const removeCartItemAPI = async (item_id: number) => {
 
 export const clearCartAPI = async () => {
     const response = await api.delete('/cart');
+    return response.data;
+};
+
+export const createOrder = async (shipping_address: any) => {
+    const response = await api.post('/orders', { shipping_address });
+    return response.data;
+};
+
+export const getUserOrders = async () => {
+    const response = await api.get('/orders');
+    return response.data;
+};
+
+export const getUserProfile = async () => {
+    const response = await api.get('/users/me');
+    return response.data;
+};
+
+export const updateUserProfile = async (userData: any) => {
+    const response = await api.patch('/users/me', userData);
+    return response.data;
+};
+
+export const changePassword = async (passwordData: any) => {
+    const response = await api.patch('/users/me/password', passwordData);
     return response.data;
 };

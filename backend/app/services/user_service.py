@@ -17,6 +17,8 @@ def update_user(db: Session, user: User, user_update: UserUpdate) -> User:
         user.email = user_update.email
     if user_update.full_name is not None:
         user.full_name = user_update.full_name
+    if user_update.address is not None:
+        user.address = user_update.address.model_dump()
     
     db.commit()
     db.refresh(user)
