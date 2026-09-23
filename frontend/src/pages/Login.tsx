@@ -18,10 +18,10 @@ const Login = () => {
         try {
             const response = await loginUser(email, password);
 
-            const { access_token } = response.data;
+            const { access_token, refresh_token } = response.data;
 
             // Save the token via AuthContext
-            login(access_token);
+            await login(access_token, refresh_token);
 
             // Redirect them to the home page
             navigate('/home');

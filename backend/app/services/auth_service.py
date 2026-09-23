@@ -5,7 +5,7 @@ from app.schemas.auth import TokenResponse, LoginRequest
 from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token, decode_token
 from app.services.user_service import get_user_by_email, get_user_by_id
 from fastapi import HTTPException, status
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.core.config import settings
 
 def register_user(db: Session, user_create: UserCreate) -> User:
@@ -33,7 +33,7 @@ def create_tokens(db: Session, user: User) -> TokenResponse:
     refresh_token_str = create_refresh_token(data={"sub": str(user.id)})
     
     # store refresh token in db
-    expire_date = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    expire_date = datetime.now(timezone.utc) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
     db_refresh = RefreshToken(
         user_id=user.id,
         token=refresh_token_str,
@@ -60,7 +60,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> TokenResponse:
         RefreshToken.user_id == user_id
     ).first()
     
-    if not db_token or db_token.expires_at < datetime.utcnow():
+    if not db_token or db_token.expires_at < datetime.now(timezone.utc):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token")
     
     user = get_user_by_id(db, user_id)

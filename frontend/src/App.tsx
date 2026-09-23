@@ -12,6 +12,12 @@ import Navbar from './components/Navbar';
 import Cart from "./pages/Cart";
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import AdminRoute from './components/AdminRoute';
+import AdminLayout from './components/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import ProductManager from './pages/admin/ProductManager';
+import CategoryManager from './pages/admin/CategoryManager';
+import OrderManager from './pages/admin/OrderManager';
 import './App.css';
 
 function App() {
@@ -34,6 +40,14 @@ function App() {
                 <Route path='/checkout' element={<Checkout />} />
                 <Route path='/orders' element={<Orders />} />
                 <Route path='/profile' element={<Profile />} />
+
+                {/* Admin Routes */}
+                <Route path='/admin' element={<AdminRoute><AdminLayout /></AdminRoute>}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path='products' element={<ProductManager />} />
+                  <Route path='categories' element={<CategoryManager />} />
+                  <Route path='orders' element={<OrderManager />} />
+                </Route>
               </Routes>
             </main>
           </div>

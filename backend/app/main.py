@@ -4,7 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.routers import auth, users, categories, products, cart, orders
+from app.routers import auth, users, categories, products, cart, orders, dashboard
 import os
 
 app = FastAPI(title="E-Commerce API")
@@ -47,6 +47,7 @@ app.include_router(categories.router)
 app.include_router(products.router)
 app.include_router(cart.router)
 app.include_router(orders.router)
+app.include_router(dashboard.router)
 
 @app.get("/health")
 def health_check():

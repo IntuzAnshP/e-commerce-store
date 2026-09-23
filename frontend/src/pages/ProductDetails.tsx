@@ -42,7 +42,7 @@ const ProductDetails = () => {
                     <div style={{ background: '#f5f5f5', borderRadius: '8px', padding: '1rem', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {primaryImage ? (
                             <img
-                                src={primaryImage}
+                                src={`http://localhost:8000${primaryImage}`}
                                 alt={product.name}
                                 style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                             />

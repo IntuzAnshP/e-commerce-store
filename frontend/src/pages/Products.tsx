@@ -62,7 +62,7 @@ const Products = () => {
                             <div style={{ height: '150px', background: '#f5f5f5', marginBottom: '1rem' }}>
                                 {product.images && product.images.length > 0 ? (
                                     <img
-                                        src={product.images.find(img => img.is_primary)?.url || product.images[0].url}
+                                        src={`http://localhost:8000${product.images.find(img => img.is_primary)?.url || product.images[0].url}`}
                                         alt={product.name}
                                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                     />

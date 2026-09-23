@@ -5,7 +5,7 @@ import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
     // These hooks magically give us access to the global state!
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, user, logout } = useAuth();
     const { cartItems } = useCart();
     const navigate = useNavigate();
 
@@ -36,6 +36,13 @@ const Navbar = () => {
 
                 {isAuthenticated ? (
                     <>
+                        {user?.role === 'admin' && (
+                            <li>
+                                <Link to='/admin' style={{ color: '#000000ff', textDecoration: 'none', fontWeight: 'bold' }}>
+                                    Admin Panel
+                                </Link>
+                            </li>
+                        )}
                         <li>
                             <Link to='/orders' style={{ color: '#000000ff', textDecoration: 'none' }}>
                                 My Orders
