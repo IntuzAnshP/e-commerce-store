@@ -2,3 +2,4 @@ project.txt
 venv
 backend/.env__pycache__/
 .coverage
+backend/.env
