@@ -111,27 +111,35 @@ e-commerce/
    pip install -r requirements.txt
    ```
 
-4. **Environment Variables:**
+4. **Database Setup:**
+   - Create a new PostgreSQL database and user.
+   ```sql
+   CREATE DATABASE ecom_db;
+   CREATE USER ecom_user WITH PASSWORD 'ecom_user';
+   GRANT ALL PRIVILEGES ON DATABASE ecom_db TO ecom_user;
+   ```
+
+5. **Environment Variables:**
    - Create a `.env` file in the `backend` directory based on your PostgreSQL setup and JWT secret key configuration.
    - Example `.env`:
      ```env
-     DATABASE_URL=postgresql://user:password@localhost/ecommerce
+     DATABASE_URL=postgresql+psycopg://ecom_user:ecom_user@localhost:5432/ecom_db
      SECRET_KEY=your_super_secret_key
      ALGORITHM=HS256
      ACCESS_TOKEN_EXPIRE_MINUTES=30
      ```
 
-5. **Run Database Migrations:**
+6. **Run Database Migrations:**
    ```bash
    alembic upgrade head
    ```
 
-6. **Create an Admin User:**
+7. **Create an Admin User:**
    ```bash
    python scripts/create_admin.py
    ```
 
-7. **Start the FastAPI server:**
+8. **Start the FastAPI server:**
    ```bash
    uvicorn app.main:app --reload
    ```
